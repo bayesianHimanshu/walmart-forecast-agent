@@ -1,5 +1,3 @@
-# Next.js UI for Snowpark Container Services.
-# SPCS requires linux/amd64. Build with:  docker build --platform linux/amd64 -t forecast-ui .
 FROM node:20-slim AS deps
 WORKDIR /app
 COPY package.json ./

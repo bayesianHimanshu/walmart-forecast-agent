@@ -1,6 +1,3 @@
-// Calls the Cortex Agent through the SQL function SNOWFLAKE.CORTEX.DATA_AGENT_RUN
-// (same interface everything else in this repo uses — no separate REST endpoint
-// to configure). Parses the structured response into the pieces the UI shows.
 import { runSql } from './snowflake';
 
 const AGENT = 'WALMART_DEMO.FORECAST.WALMART_FORECAST_AGENT';
@@ -35,15 +32,17 @@ function textFromContent(content: any[]): { answer: string; sql: string | null; 
   return { answer: answer.trim(), sql, thinking: thinking.trim(), tools };
 }
 
+function sqlLiteral(s: string): string {
+  return "'" + s.replace(/\\/g, '\\\\').replace(/'/g, "''") + "'";
+}
+
 export async function askAgent(question: string): Promise<AgentReply> {
   const payload = {
     messages: [{ role: 'user', content: [{ type: 'text', text: question }] }],
   };
-  // DATA_AGENT_RUN returns a VARIANT; we alias it and read the single row/column.
-  const rows = await runSql<any>(
-    `SELECT SNOWFLAKE.CORTEX.DATA_AGENT_RUN(?, PARSE_JSON(?)) AS RESP`,
-    [AGENT, JSON.stringify(payload)]
-  );
+  const sql =
+    `SELECT SNOWFLAKE.CORTEX.DATA_AGENT_RUN(${sqlLiteral(AGENT)}, ${sqlLiteral(JSON.stringify(payload))}) AS RESP`;
+  const rows = await runSql<any>(sql);
   const raw = rows?.[0]?.RESP;
   const resp = typeof raw === 'string' ? JSON.parse(raw) : raw;
   const content = resp?.content || resp?.messages?.slice(-1)?.[0]?.content || [];

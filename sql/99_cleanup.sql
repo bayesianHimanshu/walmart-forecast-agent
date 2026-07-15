@@ -1,6 +1,3 @@
-/* ============================================================================
-   99_cleanup.sql  -  Remove demo objects. Uncomment the last lines to drop all.
-   ============================================================================ */
 USE ROLE ACCOUNTADMIN;
 USE DATABASE WALMART_DEMO;
 USE SCHEMA FORECAST;

@@ -1,13 +1,4 @@
 #!/usr/bin/env bash
-# Build the Next.js image (linux/amd64) and push it to your Snowflake image repo.
-#
-# 1) Get your repo URL:
-#      SHOW IMAGE REPOSITORIES IN SCHEMA WALMART_DEMO.FORECAST;   -- copy repository_url
-# 2) Export it and run this script from the repo root:
-#      export SNOW_REPO="<org>-<account>.registry.snowflakecomputing.com/walmart_demo/forecast/images"
-#      export SNOW_REGISTRY="<org>-<account>.registry.snowflakecomputing.com"
-#      export SNOW_USER="<your_user>"
-#      bash spcs/build_and_push.sh
 set -euo pipefail
 
 : "${SNOW_REPO:?set SNOW_REPO to your image repository URL (no trailing slash)}"

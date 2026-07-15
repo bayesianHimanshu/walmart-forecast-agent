@@ -1,8 +1,3 @@
-# SPCS service specification for the Next.js forecasting UI.
-# Replace <ORG>-<ACCOUNT> / repository path with your image repository URL from
-#   SHOW IMAGE REPOSITORIES IN SCHEMA WALMART_DEMO.FORECAST;
-# The public endpoint is fronted by Snowflake's auth proxy: visitors must log in
-# to Snowflake (and their default role must not be ACCOUNTADMIN/SECURITYADMIN/ORGADMIN).
 spec:
   containers:
     - name: ui
@@ -13,6 +8,7 @@ spec:
         SNOWFLAKE_SCHEMA: FORECAST
         NODE_ENV: production
         PORT: "8080"
+        HOSTNAME: "0.0.0.0"
       readinessProbe:
         port: 8080
         path: /

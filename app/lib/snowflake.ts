@@ -1,7 +1,3 @@
-// Connects to Snowflake from inside a Snowpark Container Services container.
-// SPCS injects an OAuth token at /snowflake/session/token and account/host env
-// vars, so the container authenticates as the service's owner role — no secrets
-// to manage. Falls back to env-based key-pair/password auth for local dev.
 import snowflake from 'snowflake-sdk';
 import { readFileSync } from 'fs';
 
@@ -32,7 +28,6 @@ function connectionOptions(): snowflake.ConnectionOptions {
   if (token) {
     return { ...base, authenticator: 'OAUTH', token };
   }
-  // Local development fallback (username/password from env).
   return {
     ...base,
     username: process.env.SNOWFLAKE_USER!,
@@ -40,8 +35,6 @@ function connectionOptions(): snowflake.ConnectionOptions {
   };
 }
 
-// One-shot query: connect, run, destroy. The SPCS token can rotate, so a fresh
-// connection per request keeps things simple and robust for a demo workload.
 export function runSql<T = any>(sqlText: string, binds: any[] = []): Promise<T[]> {
   return new Promise((resolve, reject) => {
     const conn = snowflake.createConnection(connectionOptions());

@@ -16,6 +16,7 @@ spec:
         SNOWFLAKE_SCHEMA: FORECAST
         NODE_ENV: production
         PORT: "8080"
+        HOSTNAME: "0.0.0.0"
       readinessProbe:
         port: 8080
         path: /
