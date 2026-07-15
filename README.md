@@ -43,18 +43,3 @@ and run `spcs/01`→`02`, then open the service endpoint.
 You can also open this whole repo as a **Snowflake Workspace** (Projects ->
 Workspaces -> From Git repository) - see the optional Git block in `sql/00_setup.sql`
 - and run/commit everything from Snowsight.
-
-## Honest caveats
-- **Cortex + SPCS require a paid/self-service account** (not a bare trial) and a
-  supported region. Confirm both before the demo.
-- **`sql/04b` (native ML.FORECAST across backtest origins) is the one part not run
-  against a live account.** It's optional and clearly marked; the four-model
-  pipeline is complete without it.
-- **Prophet** must be in your account's Anaconda channel to load; if `CREATE
-  PROCEDURE` rejects it, drop it from `PACKAGES` and it falls back gracefully.
-- **The COPY format** matches the standard Kaggle CSVs; if your download differs,
-  adjust `CSV_FMT` in `sql/01`.
-- **The SPCS public endpoint is Snowflake-login-gated** (not anonymous) and the
-  compute pool **doesn't auto-suspend** - suspend it between demos.
-- Forward forecasts carry the last observed exogenous values forward (no true
-  future values exist in the dataset); the backtest uses real historical values.
