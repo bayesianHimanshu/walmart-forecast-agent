@@ -11,7 +11,7 @@ PACKAGES = ('snowflake-snowpark-python','pandas','numpy','statsmodels','scikit-l
 HANDLER = 'main'
 AS
 $$
-import numpy as np, pandas as pd, datetime as dt
+import json, numpy as np, pandas as pd, datetime as dt
 
 EXO = ["TEMPERATURE","FUEL_PRICE","CPI","UNEMPLOYMENT",
        "MARKDOWN1","MARKDOWN2","MARKDOWN3","MARKDOWN4","MARKDOWN5"]
@@ -83,7 +83,10 @@ def _future_exog(h, future_dates):
 
 def main(session, run_id):
     cfg=session.table("BACKTEST_CONFIG").to_pandas().iloc[0]
-    H=int(cfg["HORIZON_WEEKS"]); origins=[int(x) for x in cfg["ORIGINS"]]; Z=float(cfg["INTERVAL_Z"])
+    origins_raw = cfg["ORIGINS"]
+    if isinstance(origins_raw, str):
+        origins_raw = json.loads(origins_raw)          # ARRAY comes back as a JSON string
+    H = int(cfg["HORIZON_WEEKS"]); origins = [int(x) for x in origins_raw]; Z = float(cfg["INTERVAL_Z"])
 
     df=session.table("SALES_WEEKLY_DEMO").to_pandas()
     df["WEEK_DATE"]=pd.to_datetime(df["WEEK_DATE"])
