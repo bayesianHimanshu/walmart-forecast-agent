@@ -6,10 +6,14 @@ USE SCHEMA FORECAST;
 SET run_id = (SELECT MAX(run_id) FROM BACKTEST_FORECASTS);
 
 -- MASE scale per series = mean |seasonal(52) difference| over the full history.
+-- (compute the LAG in a subquery first; a window function can't nest in AVG)
 CREATE OR REPLACE TEMP TABLE _mase_scale AS
-SELECT series_key,
-       AVG(ABS(weekly_sales - LAG(weekly_sales,52) OVER (PARTITION BY series_key ORDER BY week_date))) AS scale
-FROM SALES_WEEKLY_DEMO
+SELECT series_key, AVG(ABS(seasonal_diff)) AS scale
+FROM (
+    SELECT series_key,
+           weekly_sales - LAG(weekly_sales, 52) OVER (PARTITION BY series_key ORDER BY week_date) AS seasonal_diff
+    FROM SALES_WEEKLY_DEMO
+)
 GROUP BY series_key;
 
 -- Per series x model metrics.
