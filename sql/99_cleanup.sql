@@ -1,0 +1,20 @@
+/* ============================================================================
+   99_cleanup.sql  -  Remove demo objects. Uncomment the last lines to drop all.
+   ============================================================================ */
+USE ROLE ACCOUNTADMIN;
+USE DATABASE WALMART_DEMO;
+USE SCHEMA FORECAST;
+
+DROP AGENT IF EXISTS WALMART_FORECAST_AGENT;
+DROP CORTEX SEARCH SERVICE IF EXISTS MODEL_DOCS_SEARCH;
+DROP SEMANTIC VIEW IF EXISTS WALMART_FORECAST_SV;
+DROP PROCEDURE IF EXISTS RUN_FORECAST_MODELS(STRING);
+DROP PROCEDURE IF EXISTS RUN_NATIVE_MLFORECAST(STRING);
+
+-- Stop the SPCS service + pool first if you deployed the UI (see spcs/):
+-- DROP SERVICE IF EXISTS WALMART_DEMO.FORECAST.FORECAST_UI;
+-- DROP COMPUTE POOL IF EXISTS WALMART_UI_POOL;
+
+-- Full teardown:
+-- DROP DATABASE IF EXISTS WALMART_DEMO;
+-- DROP WAREHOUSE IF EXISTS WALMART_WH;

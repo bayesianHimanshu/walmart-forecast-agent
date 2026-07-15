@@ -1,0 +1,16 @@
+data/*.csv
+!data/demo_pairs.csv
+
+# node / next
+app/node_modules/
+app/.next/
+app/npm-debug.log*
+
+# python
+__pycache__/
+*.pyc
+
+# os
+.DS_Store
+
+docs/
