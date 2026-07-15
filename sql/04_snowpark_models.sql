@@ -142,7 +142,7 @@ $$;
 CALL RUN_FORECAST_MODELS('run_' || TO_VARCHAR(CURRENT_TIMESTAMP(), 'YYYYMMDD_HH24MISS'));
 
 -- Peek
-SELECT model, COUNT(*) rows FROM BACKTEST_FORECASTS GROUP BY 1 ORDER BY 1;
+SELECT model, COUNT(*) nrows FROM BACKTEST_FORECASTS GROUP BY 1 ORDER BY 1;
 
 /* Next: 04b_native_mlforecast_optional.sql  (optional: add Snowflake's native
    forecaster as a competitor), then 05_metrics_champion_rationale.sql */

@@ -31,7 +31,7 @@ FROM RAW_TRAIN t
 JOIN RAW_STORES s ON s.store = t.store
 LEFT JOIN RAW_FEATURES f ON f.store = t.store AND f.week_date = t.week_date;
 
-SELECT COUNT(*) rows, COUNT(DISTINCT series_key) series FROM SALES_WEEKLY;  -- 421570 / 3331
+SELECT COUNT(*) nrows, COUNT(DISTINCT series_key) series FROM SALES_WEEKLY;  -- 421570 / 3331
 
 -- 2. DEMO_SERIES: 49 curated store-dept pairs (stores 20/A, 10/B, 37/C) spanning
 --    seasonal strength 0.58-1.00, holiday lift 0.33x-3.09x, volume ~$140-$165k,
